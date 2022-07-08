@@ -1,0 +1,4 @@
+---
+- name: Install Redis
+  ansible.builtin.apt:
+    name: redis-server

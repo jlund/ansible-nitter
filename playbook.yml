@@ -1,0 +1,13 @@
+- name: Set up a Nitter server (including Caddy and Redis)
+# ---------------------------------------
+  hosts: nitter_hosts
+  gather_facts: no
+
+  remote_user: root
+  become: true
+
+  roles:
+    - nim
+    - redis-server
+    - nitter
+    - caddy

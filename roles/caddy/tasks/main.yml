@@ -1,0 +1,36 @@
+- name: Install Caddy dependencies
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+
+- name: Add the Caddy APT signing key
+  ansible.builtin.apt_key:
+    id: 155B6D79CA56EA34
+    url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+    keyring: "{{ caddy_keyring }}"
+
+- name: Generate the Caddy repository source file
+  ansible.builtin.template:
+    src: caddy-stable.list.j2
+    dest: /etc/apt/sources.list.d/caddy-stable.list
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install Caddy
+  ansible.builtin.apt:
+    name: caddy
+    update_cache: yes
+
+- name: Generate the Caddy configuration file
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload Caddy
+  ansible.builtin.systemd:
+    name: caddy
+    state: reloaded

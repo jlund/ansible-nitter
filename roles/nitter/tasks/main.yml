@@ -1,0 +1,60 @@
+---
+- name: Install Nitter dependencies
+  ansible.builtin.apt:
+    pkg:
+      - build-essential
+      - libsass-dev
+      - libssl-dev
+      - git
+
+- name: Create the user account
+  ansible.builtin.user:
+    name: nitter
+
+- name: Create the Ansible directory for the nitter user
+  ansible.builtin.file:
+    path: /home/nitter/.ansible/tmp
+    state: directory
+    mode: '0700'
+    owner: nitter
+    group: nitter
+
+- name: Clone the Nitter repo
+  ansible.builtin.git:
+    repo: https://github.com/zedeus/nitter.git
+    dest: "{{ nitter_directory }}"
+  become: yes
+  become_user: nitter
+
+- name: Compile Nitter
+  ansible.builtin.command: "{{ item }}"
+  become: yes
+  become_user: nitter
+  args:
+    chdir: "{{ nitter_directory }}"
+  loop:
+    - nimble build -d:release -y
+    - nimble scss
+    - nimble md
+
+- name: Generate the Nitter configuration file
+  ansible.builtin.template:
+    src: nitter.conf.j2
+    dest: "{{ nitter_directory }}/nitter.conf"
+    owner: nitter
+    group: nitter
+    mode: '0600'
+
+- name: Generate the Nitter systemd service file
+  ansible.builtin.template:
+    src: nitter.service.j2
+    dest: /etc/systemd/system/nitter.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start the Nitter service
+  ansible.builtin.systemd:
+    name: nitter.service
+    enabled: yes
+    state: started

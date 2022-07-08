@@ -1,0 +1,22 @@
+---
+- name: Download Nim pre-built binary
+  ansible.builtin.get_url:
+    url: https://nim-lang.org/download/{{ nim_archive }}
+    dest: /tmp/{{ nim_archive }}
+    checksum: sha256:https://nim-lang.org/download/{{ nim_archive }}.sha256
+
+- name: Unarchive the Nim pre-built-binary
+  ansible.builtin.unarchive:
+    src: /tmp/{{ nim_archive }}
+    dest: /opt
+    creates: /opt/nim-{{ nim_version }}
+    remote_src: yes
+
+- name: Create Nim symlinks
+  ansible.builtin.file:
+    src: /opt/nim-{{ nim_version }}/bin/{{ item }}
+    dest: /usr/local/bin/{{ item }}
+    owner: root
+    group: root
+    state: link
+  loop: "{{ nim_binaries }}"
