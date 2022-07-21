@@ -46,6 +46,8 @@
     owner: nitter
     group: nitter
     mode: '0600'
+  notify:
+    - "Restart the Nitter service"
 
 - name: Generate the Nitter systemd service file
   ansible.builtin.template:
