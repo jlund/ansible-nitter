@@ -25,6 +25,8 @@
     dest: "{{ nitter_directory }}"
   become: yes
   become_user: nitter
+  notify:
+    - "Restart the Nitter service"
 
 - name: Compile Nitter
   ansible.builtin.command: "{{ item }}"
