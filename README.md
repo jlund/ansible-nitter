@@ -2,7 +2,13 @@
 
 A simple Ansible playbook that sets up and configures a fully functional [Nitter](https://github.com/zedeus/nitter) server (Nitter + Redis + [Caddy](https://caddyserver.com/) w/ HTTPS).
 
-This playbook was used to set up the [Unofficial Bird](https://unofficialbird.com) Nitter instance.
+This playbook was used to set up the Unofficial Bird public Nitter instances:
+- https://unofficialbird.com (🇺🇸)
+- https://canada.unofficialbird.com (🇨🇦)
+- https://india.unofficialbird.com (🇮🇳)
+- https://nederland.unofficialbird.com (🇳🇱)
+- https://singapore.unofficialbird.com (🇸🇬)
+- https://uk.unofficialbird.com (🇬🇧)
 
 ## Setup Instructions
 1. Launch a Ubuntu 22.04 VPS and point a domain or subdomain to its new IP.
