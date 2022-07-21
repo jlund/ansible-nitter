@@ -29,8 +29,4 @@
     owner: root
     group: root
     mode: '0644'
-
-- name: Reload Caddy
-  ansible.builtin.systemd:
-    name: caddy
-    state: reloaded
+  notify: "Reload Caddy"
