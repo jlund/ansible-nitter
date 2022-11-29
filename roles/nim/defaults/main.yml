@@ -9,5 +9,5 @@ nim_binaries:
   - nimpretty
   - nimsuggest
   - testament
-nim_version: 1.6.6
+nim_version: 1.6.10
 nim_archive: nim-{{ nim_version }}-linux_x64.tar.xz
